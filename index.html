@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button™ — The World's First AI-Powered Button</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --card: #12121a;
+      --border: #2a2a3a;
+      --accent: #7c5cfc;
+      --accent2: #fc5c7d;
+      --text: #e8e8f0;
+      --muted: #888899;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,15,0.9);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .logo { font-size: 22px; font-weight: 700; }
+    .logo span { color: var(--accent); }
+
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 15px; transition: color 0.2s; }
+    nav a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: white !important;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 80px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(124,92,252,0.15);
+      border: 1px solid rgba(124,92,252,0.4);
+      color: #a78bfa;
+      font-size: 13px;
+      padding: 5px 14px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 48px;
+    }
+
+    /* THE BUTTON */
+    #the-button {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: 22px 56px;
+      font-size: 22px;
+      font-weight: 700;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 0 40px rgba(124,92,252,0.4);
+      letter-spacing: 0.5px;
+    }
+
+    #the-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(124,92,252,0.6);
+    }
+
+    #the-button:active { transform: scale(0.95) translateY(1px); }
+
+    #press-result {
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--muted);
+      min-height: 26px;
+    }
+
+    #press-count { margin-top: 10px; font-size: 13px; color: #555566; }
+
+    /* INVESTOR LOGOS */
+    .investors {
+      text-align: center;
+      padding: 32px 20px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .investors p {
+      color: #44445a;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .investor-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .investor-logos span { color: #33334a; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      padding: 70px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* FEATURES */
+    .features { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+
+    .section-label {
+      text-align: center;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 56px;
+      letter-spacing: -1px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .feature-icon { font-size: 32px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { color: var(--muted); font-size: 15px; }
+
+    /* TESTIMONIALS */
+    .testimonials { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .testimonial-card p { font-size: 15px; color: var(--muted); margin-bottom: 20px; line-height: 1.7; }
+    .testimonial-card p::before { content: '"'; font-size: 40px; color: var(--accent); line-height: 0; vertical-align: -14px; margin-right: 4px; }
+
+    .reviewer { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .reviewer-info strong { display: block; font-size: 14px; }
+    .reviewer-info span { font-size: 12px; color: var(--muted); }
+    .stars { color: #f59e0b; font-size: 13px; }
+
+    /* PRICING */
+    .pricing { padding: 60px 20px; max-width: 900px; margin: 0 auto; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+    }
+
+    .pricing-card.featured { border-color: var(--accent); box-shadow: 0 0 40px rgba(124,92,252,0.2); }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent);
+      color: white;
+      font-size: 12px; font-weight: 700;
+      padding: 4px 14px; border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    .plan-name { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .plan-price { font-size: 42px; font-weight: 800; margin-bottom: 4px; }
+    .plan-price span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .plan-desc { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+    .plan-features { list-style: none; margin-bottom: 28px; }
+    .plan-features li { font-size: 14px; color: var(--muted); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+    .plan-features li::before { content: "✓"; color: #4ade80; font-weight: 700; flex-shrink: 0; }
+    .plan-features li.no::before { content: "✗"; color: #555; }
+    .plan-features li.no { opacity: 0.5; }
+
+    .plan-btn {
+      width: 100%; padding: 13px; border-radius: 10px; border: none;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .plan-btn:active { transform: scale(0.97); }
+    .plan-btn.primary { background: var(--accent); color: white; }
+    .plan-btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .plan-btn:hover { opacity: 0.85; }
+
+    /* FAQ */
+    .faq { padding: 60px 20px; max-width: 680px; margin: 0 auto; }
+
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; }
+
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; font-size: 16px;
+    }
+
+    .faq-chevron { color: var(--muted); transition: transform 0.3s; font-size: 20px; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+    .faq-a {
+      color: var(--muted); font-size: 15px;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+    }
+
+    .faq-item.open .faq-a { max-height: 200px; padding-top: 12px; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      color: var(--muted); font-size: 14px; flex-wrap: wrap; gap: 16px;
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* CONFETTI */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px; border-radius: 2px;
+      pointer-events: none; z-index: 9999;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* MODAL */
+    #modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    #modal-overlay.show { display: flex; }
+
+    #modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px; max-width: 440px; width: 90%;
+      text-align: center;
+      animation: modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    #modal h2 { font-size: 28px; margin-bottom: 12px; }
+    #modal p  { color: var(--muted); margin-bottom: 24px; }
+    #modal button {
+      background: var(--accent); color: white; border: none;
+      padding: 12px 32px; border-radius: 10px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Button<span>™</span></div>
+    <ul>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#" class="nav-cta">Get Early Access</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">🏆 #1 Product of the Day on Product Hunt (we voted ourselves)</div>
+    <h1>The last <em>button</em><br>you'll ever need.</h1>
+    <p>Button™ uses cutting-edge AI to deliver a seamless single-click experience. 47 patents pending. Zero idea what it does.</p>
+    <button id="the-button">Press The Button</button>
+    <div id="press-result">Go ahead. Press it.</div>
+    <div id="press-count"></div>
+  </section>
+
+  <div class="investors">
+    <p>Backed by the world's most confused investors</p>
+    <div class="investor-logos">
+      <span>Sycamore Capital</span>
+      <span>b4z ventures</span>
+      <span>YCrumbinat0r</span>
+      <span>GoldmanSocks</span>
+      <span>Cringe &amp; Co.</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="stat-presses">2,847,291</div>
+      <div class="stat-label">Buttons pressed worldwide</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">47</div>
+      <div class="stat-label">Patents pending</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">Revenue (Series C funded)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Runway (we lost count)</div>
+    </div>
+  </div>
+
+  <section class="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need in a button.</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI-Powered Pressing</h3>
+        <p>Our proprietary ClickNet™ AI analyzes your intent before you even click. It still doesn't do anything, but it analyzes it really well.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Sub-Zero Latency</h3>
+        <p>Your click is registered in under 0ms. Technically impossible, but our marketing team insisted we put it in.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Military-Grade Security</h3>
+        <p>We encrypt your button press with 4096-bit encryption. Your click data is stored in a vault in Switzerland. Yes, really.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Click Analytics</h3>
+        <p>A beautiful dashboard showing exactly when you pressed the button, how hard, and what mood you were probably in.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Global Infrastructure</h3>
+        <p>Your button press is replicated across 47 data centers on three continents. For a button. We have too much VC money.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Custom Button Skins</h3>
+        <p>Pro users get access to 14 different button colors. Enterprise users get a button that is slightly larger.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="section-label">Testimonials</div>
+    <h2 class="section-title">People who pressed it.</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>I pressed the button and nothing happened. I pressed it again. Still nothing. I've now pressed it 4,000 times and I feel incredible.</p>
+        <div class="reviewer">
+          <div class="avatar">😶</div>
+          <div class="reviewer-info">
+            <strong>Sarah K.</strong>
+            <span>VP of Pressing Things, Amazon</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p>Our investors asked what the button does. We said "it's AI." They wired $40M the same afternoon. Button™ changed our lives.</p>
+        <div class="reviewer">
+          <div class="avatar">🤑</div>
+          <div class="reviewer-info">
+            <strong>Marcus T.</strong>
+            <span>CEO of a startup that also does nothing</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p>My therapist said I need "closure." I found it in this button. 10/10. Would press again. Am pressing right now as I write this.</p>
+        <div class="reviewer">
+          <div class="avatar">🧘</div>
+          <div class="reviewer-info">
+            <strong>Dave L.</strong>
+            <span>Former accountant, full-time button presser</span>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, transparent pricing.<br><small style="font-size:18px;font-weight:400;color:var(--muted)">For a button.</small></h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>/ mo</span></div>
+        <div class="plan-desc">For people just curious about the button.</div>
+        <ul class="plan-features">
+          <li>3 button presses per month</li>
+          <li>Standard blue button</li>
+          <li>1 click at a time</li>
+          <li class="no">Custom button color</li>
+          <li class="no">Click analytics</li>
+          <li class="no">Emotional support</li>
+        </ul>
+        <button class="plan-btn secondary" onclick="planClick('Free')">Get Started</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$12 <span>/ mo</span></div>
+        <div class="plan-desc">For serious button pressers.</div>
+        <ul class="plan-features">
+          <li>Unlimited button presses</li>
+          <li>14 button colors</li>
+          <li>Click analytics dashboard</li>
+          <li>Priority press queue</li>
+          <li>Monthly press report PDF</li>
+          <li class="no">Dedicated button manager</li>
+        </ul>
+        <button class="plan-btn primary" onclick="planClick('Pro')">Start Free Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">$$$</div>
+        <div class="plan-desc">For companies that press buttons at scale.</div>
+        <ul class="plan-features">
+          <li>Unlimited everything</li>
+          <li>Slightly larger button</li>
+          <li>Dedicated button manager</li>
+          <li>On-site button training</li>
+          <li>Custom button shape (oval)</li>
+          <li>SLA: button works 99.9% of the time</li>
+        </ul>
+        <button class="plan-btn secondary" onclick="planClick('Enterprise')">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Frequently asked questions.</h2>
+    <div class="faq-item">
+      <div class="faq-q">What does the button do? <span class="faq-chevron">⌄</span></div>
+      <div class="faq-a">Great question. We've been thinking about this since our 2019 founding. Our current position is: it depends.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Why does this cost money? <span class="faq-chevron">⌄</span></div>
+      <div class="faq-a">Infrastructure isn't free. We have 47 data centers replicating your button press in real time. Also we need kombucha in the office.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is my button press data safe? <span class="faq-chevron">⌄</span></div>
+      <div class="faq-a">Your click data is encrypted, stored in Switzerland, and notarized by three lawyers. We take your button presses very seriously.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if the button breaks? <span class="faq-chevron">⌄</span></div>
+      <div class="faq-a">Pro and Enterprise plans include a 99.9% uptime SLA. In the event of a button outage, we will personally apologize via a blog post titled "We Let You Down."</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I use the button on mobile? <span class="faq-chevron">⌄</span></div>
+      <div class="faq-a">We have a mobile app. It is just the button. It is 47MB. We are not sorry.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 Button™ Inc. All rights reserved. Patent pending ×47.</div>
+    <div style="display:flex;gap:24px;">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Press Kit</a>
+      <a href="#">We're Hiring</a>
+    </div>
+  </footer>
+
+  <div id="modal-overlay" onclick="closeModal(event)">
+    <div id="modal">
+      <h2 id="modal-title"></h2>
+      <p id="modal-body"></p>
+      <button onclick="closeModal()">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    let pressCount = 0;
+    const results = [
+      ["✅ Success!", "Your button press has been logged, encrypted, and sent to 47 data centers. Thank you for your contribution."],
+      ["🤔 Hmm.", "The AI is processing your intent. This may take 3–5 business decades."],
+      ["🎉 Congratulations!", "You've been added to the Button Hall of Fame. A certificate will not be mailed to you."],
+      ["❌ Error 418", "I'm a teapot. This is a real HTTP error. We didn't know what else to put here."],
+      ["📊 Analytics Update", "Your click brought our total to a rounder number. The dashboard looks great. You did great."],
+      ["💌 Thank you!", "Our investors have been notified of your press. They don't know what it means either."],
+      ["🔒 Security Check", "Your click has been verified by 3 independent auditors. You are who you say you are: a person who pressed a button."],
+      ["🌍 Global Impact", "Your button press was felt in 12 countries. Scientists are investigating."],
+      ["🤖 AI Response", "ClickNet™ has analyzed your press and determined your intent was: 'curious.' Correct."],
+      ["📦 Shipment Update", "Nothing is being shipped to you. But if it were, it would arrive on time."],
+    ];
+
+    document.getElementById("the-button").addEventListener("click", function () {
+      pressCount++;
+      const [title, body] = results[(pressCount - 1) % results.length];
+      showModal(title, body);
+      document.getElementById("press-result").textContent = `Press #${pressCount} recorded.`;
+      document.getElementById("press-count").textContent =
+        `You have pressed the button ${pressCount} time${pressCount !== 1 ? "s" : ""}.`;
+      const el = document.getElementById("stat-presses");
+      el.textContent = (parseInt(el.textContent.replace(/,/g, "")) + 1).toLocaleString();
+      spawnConfetti();
+    });
+
+    const planMessages = {
+      Free:       ["You chose Free.", "You will get 3 presses per month. We respect the budget. The button will still not do anything."],
+      Pro:        ["Welcome to Pro! 🎉", "Unlimited presses. 14 colors. A monthly PDF report you will never open."],
+      Enterprise: ["Connecting you to Sales…", "Just kidding. Our sales team is one guy named Greg and he's at lunch. He'll email you never."],
+    };
+
+    function planClick(plan) {
+      const [title, body] = planMessages[plan];
+      showModal(title, body);
+    }
+
+    function showModal(title, body) {
+      document.getElementById("modal-title").textContent = title;
+      document.getElementById("modal-body").textContent = body;
+      const overlay = document.getElementById("modal-overlay");
+      overlay.classList.add("show");
+      // re-trigger animation
+      const modal = document.getElementById("modal");
+      modal.style.animation = "none";
+      modal.offsetHeight;
+      modal.style.animation = "";
+    }
+
+    function closeModal(e) {
+      if (!e || e.target === document.getElementById("modal-overlay")) {
+        document.getElementById("modal-overlay").classList.remove("show");
+      }
+    }
+
+    const confettiColors = ["#7c5cfc","#fc5c7d","#4ade80","#f59e0b","#60a5fa","#f472b6"];
+    function spawnConfetti() {
+      for (let i = 0; i < 60; i++) {
+        const el = document.createElement("div");
+        el.className = "confetti-piece";
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        el.style.width  = (8 + Math.random() * 8) + "px";
+        el.style.height = (8 + Math.random() * 8) + "px";
+        el.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+        el.style.animationDelay   = Math.random() * 0.4 + "s";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+      }
+    }
+
+    document.querySelectorAll(".faq-item").forEach(item => {
+      item.querySelector(".faq-q").addEventListener("click", () => {
+        const wasOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+        if (!wasOpen) item.classList.add("open");
+      });
+    });
+
+    document.querySelectorAll("nav a:not(.nav-cta)").forEach(a =>
+      a.addEventListener("click", e => e.preventDefault())
+    );
+
+    document.querySelector(".nav-cta").addEventListener("click", e => {
+      e.preventDefault();
+      showModal("You're on the waitlist!", "You are #47,291 in line. Estimated wait: 3–5 business decades. We appreciate your patience.");
+    });
+  </script>
+
+</body>
+</html>
